@@ -1,4 +1,4 @@
-import formatPage from "../helpers/format-page.js";
+import formatPage from "./format-page.js";
 
 /**
  * List all pages in the database using a specific JSON format.
