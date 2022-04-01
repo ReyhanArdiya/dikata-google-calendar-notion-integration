@@ -16,23 +16,23 @@
 const formatPage = page => {
 	const {
 		id,
-		properties : {
+		properties/*  : {
 			Type: { select: { name: type } },
 			Progress: { select: { name: progress } },
 			Date: { date },
 			Summary: { "rich_text": [ { "plain_text": summary } ] },
 			Name: { title: [ { "plain_text": name } ] }
-		},
+		}, */,
 		url
 	} = page;
 
 	return {
-		date,
+		date     : properties?.Date?.date || null,
 		id,
-		name,
-		progress,
-		summary,
-		type,
+		name     : properties?.Name?.title?.[0]?.plain_text || null,
+		progress : properties?.Progress?.select?.name || null,
+		summary  : properties?.Summary?.rich_text?.[0]?.plain_text || null,
+		type     : properties?.Type?.select?.name || null,
 		url
 	};
 };
