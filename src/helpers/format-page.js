@@ -1,7 +1,7 @@
 /**
- * Formats a notion page's JSON data from the database API into another JSON format.
+ * Formats a notion page object JSON data into another JSON format.
  *
- * @param {any} page A notion page's JSON data from the database API
+ * @param {any} page A notion page object JSON data.
  *
  * @returns {{
  *date: {start: string | null, end: string | null, time_zone: string | null},
