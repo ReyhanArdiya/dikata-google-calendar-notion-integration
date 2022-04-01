@@ -9,7 +9,7 @@ import formatPage from "./format-page.js";
  *
  * @param {string} title
  *
- * @returns {Promise<any>}
+ * @returns {Promise<any[]>}
  */
 export const findPagesByTitle = async (notion, databaseId, title) => {
 	const { results } = await notion.databases.query({
@@ -32,7 +32,7 @@ export const findPagesByTitle = async (notion, databaseId, title) => {
  *
  * @param {"Not Yet" | "In Progress" | "Done" | "Cancelled"} progress
  *
- * @returns {Promise<any>}
+ * @returns {Promise<any[]>}
  */
 export const findPagesByProgress = async (notion, databaseId, progress) => {
 	const { results } = await notion.databases.query({
@@ -55,7 +55,7 @@ export const findPagesByProgress = async (notion, databaseId, progress) => {
  *
  * @param {"Department Meeting" | "Organization Meeting"} type
  *
- * @returns {Promise<any>}
+ * @returns {Promise<any[]>}
  */
 export const findPagesByType = async (notion, databaseId, type) => {
 	const { results } = await notion.databases.query({
@@ -78,7 +78,7 @@ export const findPagesByType = async (notion, databaseId, type) => {
  *
  * @param {string} date A date string in the format of "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM:SS".
  *
- * @returns {Promise<any>}
+ * @returns {Promise<any[]>}
  */
 export const findPagesByDateOnBefore = async (notion, databaseId, date) => {
 	// Year must be 4 characters and there is no limit
