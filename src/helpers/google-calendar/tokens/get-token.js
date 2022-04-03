@@ -14,6 +14,13 @@ But you should only need to do this once since the refresh token will be used pr
 by this app later.
 */
 
+/*
+CMT btw if we ever want to do this again, we don't have to use express or passport
+since the googleapis module already has its own way of doing authentication.
+But even then if I want to use an OAuth2 client i would still need to open up the
+consent page :/
+*/
+
 if (process.env.NODE_ENV !== "production") {
 	await import("dotenv/config");
 }
