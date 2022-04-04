@@ -8,46 +8,54 @@ import { createRFC3339 } from "./RFC3339.js";
  * @returns {{pastMonthStart: string | Date, pastMonthEnd: string | Date}}
  */
 const getPastMonth = (RFC3339 = true) => {
-	const today = new Date();
-	const year = today.getFullYear();
-	const month = today.getMonth();
-	const WIBTimeZone = "+07:00";
+	// Past month end is technically today's time
+	const pastMonthEnd = new Date();
 
-	const lastMonthStart = new Date(year, month, 1);
-	const lastMonthEnd = new Date(year, month, 31);
+	// Past month start
+	const pastMonthStart = new Date(
+		pastMonthEnd.getFullYear(),
+		pastMonthEnd.getMonth(),
+		// We get past month's start by substracting -31 days from today's date
+		pastMonthEnd.getDate() - 31,
+		pastMonthEnd.getHours(),
+		pastMonthEnd.getMinutes(),
+		pastMonthEnd.getSeconds()
+	);
 
 	if (!RFC3339) {
 		return {
-			lastMonthEnd,
-			lastMonthStart
+			pastMonthEnd,
+			pastMonthStart
 		};
 	}
 
-	// Derive RFC3339 of lastMonthStart
-	const lastMonthStartRFC3339 = createRFC3339(
-		lastMonthStart.getFullYear(),
-		lastMonthStart.getMonth(),
-		lastMonthStart.getDate(),
-		lastMonthStart.getHours(),
-		lastMonthStart.getMinutes(),
-		lastMonthStart.getSeconds(),
+	const WIBTimeZone = "+07:00";
+	// The months below neeeds to be incremented by 1 since Date's month starts at 0
+	// Derive RFC3339 of pastMonthStart
+	const pastMonthStartRFC3339 = createRFC3339(
+		pastMonthStart.getFullYear(),
+		pastMonthStart.getMonth() + 1,
+		pastMonthStart.getDate(),
+		pastMonthStart.getHours(),
+		pastMonthStart.getMinutes(),
+		pastMonthStart.getSeconds(),
 		WIBTimeZone
 	);
 
-	// Derive RFC3339 of lastMonthEnd
-	const lastMonthEndRFC3339 = createRFC3339(
-		lastMonthEnd.getFullYear(),
-		lastMonthEnd.getMonth(),
-		lastMonthEnd.getDate(),
-		lastMonthEnd.getHours(),
-		lastMonthEnd.getMinutes(),
-		lastMonthEnd.getSeconds(),
+	// Derive RFC3339 of pastMonthEnd
+	const pastMonthEndRFC3339 = createRFC3339(
+		pastMonthEnd.getFullYear(),
+		pastMonthEnd.getMonth() + 1,
+		pastMonthEnd.getDate(),
+		pastMonthEnd.getHours(),
+		pastMonthEnd.getMinutes(),
+		pastMonthEnd.getSeconds(),
 		WIBTimeZone
 	);
 
 	return {
-		lastMonthEnd   : lastMonthEndRFC3339,
-		lastMonthStart : lastMonthStartRFC3339,
+		pastMonthEnd   : pastMonthEndRFC3339,
+		pastMonthStart : pastMonthStartRFC3339,
 	};
 };
 
