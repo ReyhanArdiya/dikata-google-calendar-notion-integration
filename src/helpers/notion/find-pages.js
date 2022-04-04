@@ -1,4 +1,5 @@
 import formatPage from "./format-page.js";
+import { validateRFC3339 } from "../dates/RFC3339.js";
 
 /**
  * Find pages based on their title in the notion database.
@@ -76,28 +77,12 @@ export const findPagesByType = async (notion, databaseId, type) => {
  *
  * @param {string} databaseId
  *
- * @param {string} date A date string in the format of "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM:SS".
+ * @param {string} date A RFC3339 timestamp without time zone offset, e.g. "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM:SS".
  *
  * @returns {Promise<any[]>}
  */
 export const findPagesByDateOnBefore = async (notion, databaseId, date) => {
-	// Year must be 4 characters and there is no limit
-	const YY = "[0-9]{4}";
-	// Month must be from 00-12
-	const MM = "(0[1-9]|1[0-2])";
-	// Date must be from 01-31
-	const DD = "(0[1-9]|[12][0-9]|3[01])";
-	// Hour must be from 00-23
-	const HH = "([0-1][0-9]|2[0-3])";
-	// Minute must be from 00-59
-	const MMinute = "([0-5][0-9])";
-	// Second must be from 00-59
-	const SS = "([0-5][0-9])";
-
-	const dateFormat = new RegExp(`^${YY}-${MM}-${DD}(T${HH}:${MMinute}:${SS})?$`);
-	if (!dateFormat.test(date)) {
-		throw new Error("Invalid date! date must be formatted in \"YYYY-MM-DD\" or \"YYYY-MM-DDTHH:MM:SS\" and must not exceed each time's limit, e.g. HH can't be more than 23.");
-	}
+	validateRFC3339(date, true);
 
 	const { results } = await notion.databases.query({
 		"database_id" : databaseId,
