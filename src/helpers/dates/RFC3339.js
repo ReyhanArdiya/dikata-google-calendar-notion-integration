@@ -3,11 +3,11 @@
  *
  * @param {string} date A RFC3339 timestamp with or without time zone offset.
  *
- * @param {boolean} throwErr
+ * @param {{TZOpt: boolean, throwErr: boolean}} errorChecks
  *
  * @throws if {@link throwErr} is true and the date string is invalid.
  */
-export const validateRFC3339 = (date, throwErr = false) => {
+export const validateRFC3339 = (date, { TZOpt = true, throwErr = false }) => {
 	// Year must be 4 characters and there is no limit
 	const YY = "[0-9]{4}";
 	// Month must be from 00-12
@@ -20,14 +20,14 @@ export const validateRFC3339 = (date, throwErr = false) => {
 	const MMinute = "([0-5][0-9])";
 	// Second must be from 00-59
 	const SS = "([0-5][0-9])";
-	// Optional timezone offset
-	const TZ = "(Z|[-,+][0-9]{2}:[0-9]{2})?";
+	// Timezone offset
+	const TZ = `(Z|[-,+][0-9]{2}:[0-9]{2})${TZOpt ? "?" : ""}`;
 
 	const rfc3339Format = new RegExp(`^${YY}-${MM}-${DD}(T${HH}:${MMinute}:${SS}${TZ})?$`);
 	const testRes = rfc3339Format.test(date);
 
 	if (throwErr && !testRes) {
-		throw new Error("Invalid date! date must be formatted in \"YYYY-MM-DD\" or \"YYYY-MM-DDTHH:MM:SS\" and must not exceed each time's limit, e.g. HH can't be more than 23.");
+		throw new Error("Invalid date! date must be formatted in \"YYYY-MM-DD\" or \"YYYY-MM-DDTHH:MM:SS\" and must not exceed each time's limit, e.g. HH can't be more than 23. If TZOpt if false, make sure you add a time zone offset!");
 	}
 
 	return testRes;
