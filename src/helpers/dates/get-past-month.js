@@ -14,9 +14,9 @@ const getPastMonth = (RFC3339 = true) => {
 	// Past month start
 	const pastMonthStart = new Date(
 		pastMonthEnd.getFullYear(),
-		pastMonthEnd.getMonth(),
-		// We get past month's start by substracting -31 days from today's date
-		pastMonthEnd.getDate() - 31,
+		// Past month start month is just -1 of past month end's month
+		pastMonthEnd.getMonth() - 1,
+		pastMonthEnd.getDate(),
 		pastMonthEnd.getHours(),
 		pastMonthEnd.getMinutes(),
 		pastMonthEnd.getSeconds()
