@@ -10,17 +10,18 @@ class NotionPage {
 	constructor(page) {
 		const {
 			id,
-			properties/*  : {
-                    Type: { select: { name: type } },
-                    Progress: { select: { name: progress } },
-                    Date: { date },
-                    Summary: { "rich_text": [ { "plain_text": summary } ] },
-                    Name: { title: [ { "plain_text": name } ] }
-                }, */,
+			properties,
+			properties: { Date: { date: notionDate } },
 			url
 		} = page;
 
-		this.date = properties?.Date?.date || null;
+
+		this.date = notionDate ?
+			{
+				end   : notionDate.end ? notionDate.end : notionDate.start,
+				start : notionDate.start,
+			} :
+			null;
 		this.id = id;
 		this.name = properties?.Name?.title?.[0]?.plain_text || null;
 		this.progress = properties?.Progress?.select?.name || null;
