@@ -15,13 +15,20 @@ class NotionPage {
 			url
 		} = page;
 
+		let date = null;
 
-		this.date = notionDate ?
-			{
-				end   : notionDate.end ? notionDate.end : notionDate.start,
-				start : notionDate.start,
-			} :
-			null;
+		if (notionDate) {
+			// Format start and end to RFC3339
+			const start = notionDate.start.split(".000").join("");
+			const end = notionDate.end ? notionDate.end.split(".000").join("") : start;
+
+			date = {
+				end,
+				start
+			};
+		}
+
+		this.date = date;
 		this.id = id;
 		this.name = properties?.Name?.title?.[0]?.plain_text || null;
 		this.progress = properties?.Progress?.select?.name || null;
