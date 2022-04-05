@@ -1,4 +1,4 @@
-import formatPage from "./format-page.js";
+import NotionPage from "../../models/notion-page.js";
 
 /**
  * List all pages in the database using a specific JSON format.
@@ -12,7 +12,7 @@ import formatPage from "./format-page.js";
 const listPages = async (notion, databaseId) => {
 	const { results } = await notion.databases.query({ "database_id" : databaseId });
 
-	return results.map(formatPage);
+	return results.map(page => new NotionPage(page));
 };
 
 export default listPages;

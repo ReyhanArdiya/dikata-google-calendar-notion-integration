@@ -1,4 +1,4 @@
-import formatPage from "./format-page.js";
+import NotionPage from "../../models/notion-page.js";
 import { validateRFC3339 } from "../dates/RFC3339.js";
 
 /**
@@ -21,7 +21,7 @@ export const findPagesByTitle = async (notion, databaseId, title) => {
 		},
 	});
 
-	return results.length ? results.map(formatPage) : null;
+	return results.length ? results.map(page => new NotionPage(page)) : null;
 };
 
 /**
@@ -44,7 +44,7 @@ export const findPagesByProgress = async (notion, databaseId, progress) => {
 		},
 	});
 
-	return results.length ? results.map(formatPage) : null;
+	return results.length ? results.map(page => new NotionPage(page)) : null;
 };
 
 /**
@@ -67,7 +67,7 @@ export const findPagesByType = async (notion, databaseId, type) => {
 		},
 	});
 
-	return results.length ? results.map(formatPage) : null;
+	return results.length ? results.map(page => new NotionPage(page)) : null;
 };
 
 /**
@@ -92,5 +92,5 @@ export const findPagesByDateOnBefore = async (notion, databaseId, date) => {
 		}
 	});
 
-	return results.length ? results.map(formatPage) : null;
+	return results.length ? results.map(page => new NotionPage(page)) : null;
 };
