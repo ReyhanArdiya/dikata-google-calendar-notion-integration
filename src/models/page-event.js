@@ -44,6 +44,10 @@ const PageEventSchema = new mongoose.Schema({
 	}
 }, { strict : "throw" });
 
+/**
+ * This model is a map between a `NotionPage` and a google calendar `event`
+ * using their id's and title
+ */
 const PageEvent = mongoose.model("PageEvent", PageEventSchema);
 
 export default PageEvent;
