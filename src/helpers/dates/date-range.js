@@ -7,7 +7,7 @@ import { createRFC3339 } from "./RFC3339.js";
  *
  * @returns {{pastMonthStart: string | Date, pastMonthEnd: string | Date}}
  */
-const getPastMonth = (RFC3339 = true) => {
+export const getPastMonth = (RFC3339 = true) => {
 	// Past month end is technically today's time
 	const pastMonthEnd = new Date();
 
@@ -59,7 +59,6 @@ const getPastMonth = (RFC3339 = true) => {
 	};
 };
 
-
 /**
  * Returns the `nextMonthStart` and `nextMonthEnd` starting from today's date.
  *
@@ -67,7 +66,7 @@ const getPastMonth = (RFC3339 = true) => {
  *
  * @returns {{nextMonthStart: string | Date, nextMonthEnd: string | Date}}
  */
-const getNextMonth = (RFC3339 = true) => {
+export const getNextMonth = (RFC3339 = true) => {
 	// Next month start is technically today's time
 	const nextMonthStart = new Date();
 
@@ -124,7 +123,7 @@ const getNextMonth = (RFC3339 = true) => {
  *
  * @param {boolean} RFC3339
  */
-const getPastToNextMonth = (RFC3339 = true) => {
+export const getPastToNextMonth = (RFC3339 = true) => {
 	const { pastMonthStart } = getPastMonth(RFC3339);
 	const { nextMonthEnd } = getNextMonth(RFC3339);
 
@@ -133,11 +132,3 @@ const getPastToNextMonth = (RFC3339 = true) => {
 		pastMonthStart,
 	};
 };
-
-const dateRange = {
-	getNextMonth,
-	getPastMonth,
-	getPastToNextMonth,
-};
-
-export default dateRange;
