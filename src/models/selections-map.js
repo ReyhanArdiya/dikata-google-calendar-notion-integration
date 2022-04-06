@@ -11,10 +11,6 @@ DELETE OUR OLD SELECTIONS ANYMORE, MKAY???? >:(
 ================================================================================
 */
 
-if (process.env.NODE_ENV !== "production") {
-	await import("dotenv/config");
-}
-
 /**
  * The "Progress" property selections id map
  */
