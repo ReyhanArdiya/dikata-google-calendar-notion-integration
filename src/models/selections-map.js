@@ -15,16 +15,16 @@ DELETE OUR OLD SELECTIONS ANYMORE, MKAY???? >:(
  * The "Progress" property selections id map
  */
 export const Progress = {
-	"Cancelled"   : "4d8645ca-5070-445d-8ca7-9b648ae94bfc",
-	"Done"        : "8d19d72d-cfbf-44e9-ac1c-ce7ffeb820d8",
-	"In Progress" : "747dc5e1-9778-46be-9dc8-cbca7171d26d",
-	"Not Yet"     : "54a229a2-4699-4ee1-a86c-3af09d2c6605",
+	"Cancelled"   : process.env.NOTION_SELECTION_PROGRESS_CANCELLED,
+	"Done"        : process.env.NOTION_SELECTION_PROGRESS_DONE,
+	"In Progress" : process.env.NOTION_SELECTION_PROGRESS_IN_PROGRESS,
+	"Not Yet"     : process.env.NOTION_SELECTION_PROGRESS_NOT_YET,
 };
 
 /**
  * The "Type" property selections id map
  */
 export const Type = {
-	"Department Meeting"   : "9caf6ce2-f9c7-480d-b3ed-b3f11ea77d2a",
-	"Organization Meeting" : "ca982fa8-0a24-4f47-ac48-832b09e82640"
+	"Department Meeting"   : process.env.NOTION_SELECTION_TYPE_DEPARTMENT_MEETING,
+	"Organization Meeting" : process.env.NOTION_SELECTION_TYPE_ORGANIZATION_MEETING,
 };

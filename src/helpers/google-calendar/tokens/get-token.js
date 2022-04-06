@@ -21,9 +21,6 @@ But even then if I want to use an OAuth2 client i would still need to open up th
 consent page :/
 */
 
-if (process.env.NODE_ENV !== "production") {
-	await import("dotenv/config");
-}
 import GoogleStrategy from "passport-google-oauth2";
 import express from "express";
 import { promises as fspromises } from "fs";

@@ -28,6 +28,7 @@ export const listEventsByTimeRange = async (
 
 	const res = await calendar.events.list({
 		calendarId,
+		showDeleted : true,
 		timeMax,
 		timeMin,
 	});

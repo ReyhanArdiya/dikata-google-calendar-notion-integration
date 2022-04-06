@@ -31,9 +31,9 @@ class NotionPage {
 		this.date = date;
 		this.id = id;
 		this.name = properties?.Name?.title?.[0]?.plain_text || null;
-		this.progress = properties?.Progress?.select?.name || null;
+		this.progress = properties?.Progress?.select || null;
 		this.summary = properties?.Summary?.rich_text?.[0]?.plain_text || null;
-		this.type = properties?.Type?.select?.name || null;
+		this.type = properties?.Type?.select || null;
 		this.url = url;
 	}
 }

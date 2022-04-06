@@ -1,9 +1,7 @@
+import "dotenv/config";
 import checkGcalEnvTokens from "./helpers/google-calendar/tokens/check-gcal-env-tokens.js";
 import mongoose from "mongoose";
 
-if (process.env.NODE_ENV !== "production") {
-	(await import("dotenv")).config();
-}
 
 // Only do this if we don't have the tokens in our environment yet
 if (!checkGcalEnvTokens()) {

@@ -1,4 +1,4 @@
-import getNextMonth from "../../dates/get-next-month.js";
+import getPastToNextMonth from "../../dates/get-past-to-next-month.js";
 import { listEventsByTimeRange } from "./list-events.js";
 
 /**
@@ -10,12 +10,12 @@ import { listEventsByTimeRange } from "./list-events.js";
  * @param {string} calendarId
  */
 const listDikataEvents = async (calendar, calendarId) => {
-	const { nextMonthEnd, nextMonthStart } = getNextMonth();
+	const { pastMonthStart, nextMonthEnd } = getPastToNextMonth();
 
 	const { data : { items } } = await listEventsByTimeRange(
 		calendar,
 		calendarId,
-		nextMonthStart,
+		pastMonthStart,
 		nextMonthEnd,
 	);
 
