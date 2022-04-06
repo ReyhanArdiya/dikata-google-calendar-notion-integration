@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import NotionPage from "../models/notion-page.js";
-import PageEvent from "../models/page-event.js";
+import NotionPage from "../../../models/notion-page.js";
+import PageEvent from "../../../models/page-event.js";
 import mapPageEvent from "./map-page-event.js";
 
 /**

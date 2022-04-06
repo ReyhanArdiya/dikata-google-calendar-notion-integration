@@ -1,4 +1,4 @@
-import PageEvent from "../models/page-event.js";
+import PageEvent from "../../../models/page-event.js";
 
 /**
  * Deletes a google calendar `event` in {@link calendar}

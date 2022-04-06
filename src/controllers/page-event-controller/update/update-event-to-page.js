@@ -1,6 +1,6 @@
-import PageEvent from "../models/page-event.js";
-import { Progress } from "../models/selections-map.js";
-import { createRFC3339 } from "../helpers/dates/RFC3339.js";
+import PageEvent from "../../../models/page-event.js";
+import { Progress } from "../../../models/selections-map.js";
+import { createRFC3339 } from "../../../helpers/dates/RFC3339.js";
 
 /**
  * Updates a notion {@link NotionPage} in {@link notion} based on a google

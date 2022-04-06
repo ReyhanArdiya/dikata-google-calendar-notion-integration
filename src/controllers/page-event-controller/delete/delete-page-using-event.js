@@ -1,4 +1,4 @@
-import PageEvent from "../models/page-event.js";
+import PageEvent from "../../../models/page-event.js";
 
 /**
  * Deletes a `NotionPage` in {@link notion} based on a google calendar `event`'s
