@@ -9,7 +9,7 @@ import PageEvent from "../models/page-event.js";
  *
  * @param {string} calendarId
  *
- * @param {{pageId: string, name: string}} filter
+ * @param {{id: string, name: string}} filter
  */
 const deleteEventUsingPage = async (
 	calendar,
