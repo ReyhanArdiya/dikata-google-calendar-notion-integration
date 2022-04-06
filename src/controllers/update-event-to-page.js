@@ -71,8 +71,8 @@ const updateEventToPage = async (
 			// If todayTime is before start time, then it's not yet
 			properties.Progress = { select : { id : Progress["Not Yet"] } };
 		} else if (todayTime > endTime) {
-			// If todayTime is after end time, then it's completed
-			properties.Progress = { select : { id : Progress["Completed"] } };
+			// If todayTime is after end time, then it's done
+			properties.Progress = { select : { id : Progress["Done"] } };
 		}
 	} else if (status === "cancelled") {
 		properties.Progress = { select : { id : Progress["Cancelled"] } };
