@@ -1,5 +1,6 @@
 import PageEvent from "../models/page-event.js";
 import { Progress } from "../models/selections-map.js";
+import { createRFC3339 } from "../helpers/dates/RFC3339.js";
 
 /**
  * Updates a notion {@link NotionPage} in {@link notion} based on a google
@@ -44,7 +45,36 @@ const updateEventToPage = async (
 		Name : { title : [ { text : { content : summary } } ] }
 	};
 
-	if (status === "cancelled") {
+
+	// Select the "Progress" property
+	 if (status === "confirmed") {
+		const getTime = rfc3999str => rfc3999str.slice(0, 19);
+
+		const today = new Date();
+		const todayTime = getTime(
+			createRFC3339(
+				today.getFullYear(),
+				today.getMonth() + 1,
+				today.getDate(),
+				today.getHours(),
+				today.getMinutes(),
+				today.getSeconds()
+			)
+		);
+		const startTime = getTime(start);
+		const endTime = getTime(end);
+
+		if (startTime <= todayTime && todayTime <= endTime) {
+			// If todayTime is around start and end time, then it's in progress
+			properties.Progress = { select : { id : Progress["In Progress"] } };
+		} else if (todayTime < startTime) {
+			// If todayTime is before start time, then it's not yet
+			properties.Progress = { select : { id : Progress["Not Yet"] } };
+		} else if (todayTime > endTime) {
+			// If todayTime is after end time, then it's completed
+			properties.Progress = { select : { id : Progress["Completed"] } };
+		}
+	} else if (status === "cancelled") {
 		properties.Progress = { select : { id : Progress["Cancelled"] } };
 	}
 
