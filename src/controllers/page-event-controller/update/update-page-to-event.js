@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import NotionPage from "../models/notion-page.js";
-import PageEvent from "../models/page-event.js";
-import { Progress } from "../models/selections-map.js";
+import NotionPage from "../../../models/notion-page.js";
+import PageEvent from "../../../models/page-event.js";
+import { Progress } from "../../../models/selections-map.js";
 
 /**
  * Updates a google calendar `event` based on a {@link NotionPage} object where

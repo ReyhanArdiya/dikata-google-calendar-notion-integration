@@ -1,4 +1,4 @@
-import PageEvent from "../models/page-event.js";
+import PageEvent from "../../../models/page-event.js";
 
 /**
  * Maps a `NotionPage` id and a gcal event id with their title and date start/end

@@ -1,5 +1,5 @@
-import PageEvent from "../models/page-event.js";
-import { Progress } from "../models/selections-map.js";
+import PageEvent from "../../../models/page-event.js";
+import { Progress } from "../../../models/selections-map.js";
 import mapPageEvent from "./map-page-event.js";
 
 /**

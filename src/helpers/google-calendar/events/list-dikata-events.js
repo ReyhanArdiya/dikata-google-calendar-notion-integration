@@ -1,4 +1,4 @@
-import getPastToNextMonth from "../../dates/get-past-to-next-month.js";
+import { getPastToNextMonth } from "../../dates/date-range.js";
 import { listEventsByTimeRange } from "./list-events.js";
 
 /**

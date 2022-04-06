@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import NotionPage from "../models/notion-page.js";
-import PageEvent from "../models/page-event.js";
+import NotionPage from "../../../models/notion-page.js";
+import PageEvent from "../../../models/page-event.js";
 import mapPageEvent from "./map-page-event.js";
 
 /**
@@ -20,7 +20,7 @@ const insertPageToEvent = async (
 	calendar,
 	calendarId,
 	page,
-	colorId = null
+	colorId = 6
 ) => {
 	// Stop execution if the page already exists in the calendar based off the database record
 	const existingPageEvent = await PageEvent.findOne({
