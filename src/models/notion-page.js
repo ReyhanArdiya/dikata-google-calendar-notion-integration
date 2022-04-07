@@ -16,11 +16,19 @@ class NotionPage {
 		} = page;
 
 		let date = null;
-
 		if (notionDate) {
-			// Format start and end to RFC3339
-			const start = notionDate.start.split(".000").join("");
-			const end = notionDate.end ? notionDate.end.split(".000").join("") : start;
+			// Format start and end date to RFC3339
+			let start = notionDate.start.split(".000").join("");
+			let end = notionDate.end ? notionDate.end.split(".000").join("") : start;
+
+			// There could be a possibility that our page doesn't include time,
+			// but google calendar needs time so we set a default in that case
+			if (!start.includes("T")) {
+				start = `${start}T07:00:00+07.00`;
+			}
+			if (!end.includes("T")) {
+				end = `${end}T08:00:00+07.00`;
+			}
 
 			date = {
 				end,
