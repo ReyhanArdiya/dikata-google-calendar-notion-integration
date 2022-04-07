@@ -1,3 +1,5 @@
+import { Progress } from "./selections-map.js";
+
 /**
  * Formats a notion page object JSON data into another JSON format.
  */
@@ -39,7 +41,7 @@ class NotionPage {
 		this.date = date;
 		this.id = id;
 		this.name = properties?.Name?.title?.[0]?.plain_text || null;
-		this.progress = properties?.Progress?.select || null;
+		this.progress = properties?.Progress?.select || { id : Progress["Not Yet"] } || null;
 		this.summary = properties?.Summary?.rich_text?.[0]?.plain_text || null;
 		this.type = properties?.Type?.select || null;
 		this.url = url;
