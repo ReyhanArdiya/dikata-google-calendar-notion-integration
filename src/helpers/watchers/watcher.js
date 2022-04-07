@@ -6,6 +6,7 @@
 class Watcher {
 	#watchingFn = null;
 	#asyncCb = null;
+	#catchingFn = null;
 	#ms = null;
 	#intervalTimer = null;
 
@@ -15,7 +16,13 @@ class Watcher {
 	 * in as the first and only argument.
 	 *
 	 */
-	#watch = async () => await this.#asyncCb(await this.#watchingFn());
+	#watch = async () => {
+		try {
+			await this.#asyncCb(await this.#watchingFn());
+		} catch (err) {
+			this.#catchingFn(err);
+		}
+	};
 
 	/**
 	 *
@@ -23,11 +30,14 @@ class Watcher {
 	 *
 	 * @param {(watchingFnRes : any) => Promise<any>} asyncCb
 	 *
+	 * @param {(err: Error) => void} catchingFn
+	 *
 	 * @param {number} ms
 	 */
-	constructor(watchingFn, asyncCb, ms) {
+	constructor(watchingFn, asyncCb, catchingFn, ms) {
 		this.#watchingFn = watchingFn;
 		this.#asyncCb = asyncCb;
+		this.#catchingFn = catchingFn;
 		this.#ms = ms;
 	}
 
@@ -101,6 +111,14 @@ class Watcher {
 
 	set asyncCb(asyncCb) {
 		this.#asyncCb = asyncCb;
+	}
+
+	get catchingFn() {
+		return this.#catchingFn;
+	}
+
+	set catchingFn(catchingFn) {
+		this.#catchingFn = catchingFn;
 	}
 
 	get intervalTimer() {
