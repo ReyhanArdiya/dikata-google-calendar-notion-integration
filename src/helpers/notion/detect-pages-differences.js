@@ -10,6 +10,11 @@ import PageEvent from "../../models/page-event.js";
  *
  * @param {NotionPage[]} notionPages
  *
+ * @param {boolean} verboseUpdates
+ * `true` to append more verbose updates information in the returned object `updated`
+ * property, `false` to fill it with an array of {@link NotionPage}s that was updated;
+ * default is false.
+ *
  * @returns {Promise<{
  *    deleted   : ?{
  *        date      : {
@@ -21,7 +26,7 @@ import PageEvent from "../../models/page-event.js";
  *        title     : string,
  *    }[],
  *    new       : ?NotionPage[],
- *    updated   : ?{
+ *    updated   : NotionPage[] | {
  *        _id: import("mongoose").ObjectId,
  *        eventId: string,
  *        pageId: string,
@@ -39,10 +44,10 @@ import PageEvent from "../../models/page-event.js";
  *                old: string
  *            }
  *        }
- *    }[]
+ *    }[] | null
  * }>} An object containing information about `deleted`, `new` and `updated` pages
  */
-const detectPagesDifferences = async notionPages => {
+const detectPagesDifferences = async (notionPages, verboseUpdates = false) => {
 	const differences = {
 		deleted : null,
 		new     : null,
@@ -107,47 +112,52 @@ const detectPagesDifferences = async notionPages => {
 
 			// If any property is different, it means that the page was updated
 			if (isTitleDiff || isDateStartDiff || isDateEndDiff) {
-				// We store the updates here first and give it the page's base information
-				const pageUpdates = {
-					_id,
-					eventId,
-					pageId
-				};
-
-				// If the difference was in the title, we put that information in
-				if (isTitleDiff) {
-					pageUpdates.title = {
-						new : notionPage.name,
-						old : title
+				if (verboseUpdates) {
+					// We store the updates here first and give it the page's base information
+					const pageUpdates = {
+						_id,
+						eventId,
+						pageId
 					};
-				}
 
-				// If one of the date is updated, we'll put those information in
-				if (isDateStartDiff || isDateEndDiff) {
-					const date = {};
-
-					// Put the start date difference if the difference was in the start date
-					if (isDateStartDiff) {
-						date.start = {
-							new : notionPage.date.start,
-							old : start
+					// If the difference was in the title, we put that information in
+					if (isTitleDiff) {
+						pageUpdates.title = {
+							new : notionPage.name,
+							old : title
 						};
 					}
 
-					// Put the end date difference if the difference was in the end date
-					if (isDateEndDiff) {
-						date.end = {
-							new : notionPage.date.end,
-							old : end
-						};
+					// If one of the date is updated, we'll put those information in
+					if (isDateStartDiff || isDateEndDiff) {
+						const date = {};
+
+						// Put the start date difference if the difference was in the start date
+						if (isDateStartDiff) {
+							date.start = {
+								new : notionPage.date.start,
+								old : start
+							};
+						}
+
+						// Put the end date difference if the difference was in the end date
+						if (isDateEndDiff) {
+							date.end = {
+								new : notionPage.date.end,
+								old : end
+							};
+						}
+
+						// We add the date differences in pageUpdates
+						pageUpdates.date = date;
 					}
 
-					// We add the date differences in pageUpdates
-					pageUpdates.date = date;
+					// We push this page's updates information into the array
+					updatedPages.push(pageUpdates);
+				} else {
+					// If verboseUpdates is false, we just push the updated page into the array
+					updatedPages.push(notionPage);
 				}
-
-				// We push this page's updates information into the array
-				updatedPages.push(pageUpdates);
 			}
 		}
 	);
