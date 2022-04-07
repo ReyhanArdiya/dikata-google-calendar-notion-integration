@@ -69,11 +69,12 @@ class Watcher {
 			return false;
 		}
 
+		this.#isRunning = true;
+
 		if (doOnce) {
 			await this.#watch();
 		}
 
-		this.#isRunning = true;
 		this.#runWatcher();
 		return this.#timeoutTimer;
 	}
