@@ -11,7 +11,15 @@ import PageEvent from "../../models/page-event.js";
  * @param {NotionPage[]} notionPages
  *
  * @returns {Promise<{
- *    deleted   : ?PageEvent[],
+ *    deleted   : ?{
+ *        date      : {
+ *            end: string,
+ *            start: string
+ *        },
+ *        eventId   : string,
+ *        pageId    : string,
+ *        title     : string,
+ *    }[],
  *    new       : ?NotionPage[],
  *    updated   : ?{
  *        _id: import("mongoose").ObjectId,
