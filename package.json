@@ -12,6 +12,15 @@
 	"license": "MIT",
 	"dependencies": {
 		"@notionhq/client": "^1.0.4",
+		"express": "^4.17.3",
+		"googleapis": "^39.2.0",
+		"hex-color-to-color-name": "^1.0.2",
+		"mongoose": "^6.2.10",
+		"passport": "^0.5.2",
+		"passport-google-oauth2": "^0.2.0"
+	},
+	"devDependencies": {
+		"dotenv": "^16.0.0",
 		"eslint-plugin-jsdoc": "^38.1.4"
 	}
 }

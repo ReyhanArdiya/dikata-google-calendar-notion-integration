@@ -1,7 +1,9 @@
 {
 	"compilerOptions": {
 		"module": "ES6",
+		"moduleResolution": "Node",
 		"target": "ESNext",
+		"strictFunctionTypes": true,
 		"allowJs": true
 	},
 	"exclude": ["node_modules", "**/node_modules/*"]
