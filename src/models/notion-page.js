@@ -24,10 +24,10 @@ class NotionPage {
 			// There could be a possibility that our page doesn't include time,
 			// but google calendar needs time so we set a default in that case
 			if (!start.includes("T")) {
-				start = `${start}T07:00:00+07.00`;
+				start = `${start}T07:00:00+07:00`;
 			}
 			if (!end.includes("T")) {
-				end = `${end}T08:00:00+07.00`;
+				end = `${end}T08:00:00+07:00`;
 			}
 
 			date = {
