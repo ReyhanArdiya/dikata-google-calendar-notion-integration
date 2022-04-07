@@ -20,7 +20,7 @@ const insertPageToEvent = async (
 	calendar,
 	calendarId,
 	page,
-	colorId = 6
+	colorId = 5
 ) => {
 	// Stop execution if the page already exists in the calendar based off the database record
 	const existingPageEvent = await PageEvent.findOne({
