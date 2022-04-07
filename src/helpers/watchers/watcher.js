@@ -4,25 +4,37 @@
  * for every `ms` interval.
  */
 class Watcher {
-	#watchingFn = null;
 	#asyncCb = null;
 	#catchingFn = null;
+	#isRunning = false;
 	#ms = null;
-	#intervalTimer = null;
+	#timeoutTimer = null;
+	#watchingFn = null;
 
 	/**
 	 * When this method is called, {@link watchingFn} will be called
 	 * and awaited; then it will call {@link asyncCb} with the awaited result passed
 	 * in as the first and only argument.
-	 *
 	 */
-	#watch = async () => {
+	 async #watch() {
 		try {
 			await this.#asyncCb(await this.#watchingFn());
 		} catch (err) {
 			this.#catchingFn(err);
 		}
-	};
+	}
+
+	// Run the `watch`, then AFTER it is FINISHED, we run it again. I don't use
+	// setInterval here since I want to make sure that the previous processs is finished
+	// before running it again.
+	async #runWatcher() {
+		if (this.#isRunning) {
+			this.#timeoutTimer = setTimeout(async () => {
+				await this.#watch();
+				this.#runWatcher();
+			}, this.#ms);
+		}
+	}
 
 	/**
 	 *
@@ -47,13 +59,13 @@ class Watcher {
 	 * - If this {@link Watcher} is already activated, this method returns `false` and
 	 * does not set a new interval.
 	 * - If this method successfully activates this {@link Watcher}, it returns
-	 * this {@link Watcher}'s {@link intervalTimer}
+	 * this {@link Watcher}'s {@link timeoutTimer}
 	 *
 	 * @param {boolean} doOnce If true, calls the `watch` method once
 	 * on startup before setting the interval.
 	 */
 	async activate(doOnce = false) {
-		if (this.#intervalTimer) {
+		if (this.#isRunning) {
 			return false;
 		}
 
@@ -61,9 +73,9 @@ class Watcher {
 			await this.#watch();
 		}
 
-		const intervalTimer = setInterval(this.#watch, this.#ms);
-		this.#intervalTimer = intervalTimer;
-		return intervalTimer;
+		this.#isRunning = true;
+		this.#runWatcher();
+		return this.#timeoutTimer;
 	}
 
 	/**
@@ -76,7 +88,7 @@ class Watcher {
 	 * before deactivating the `Watcher`.
 	 */
 	async deactivate(doOnce = false) {
-		if (!this.#intervalTimer) {
+		if (!this.#isRunning) {
 			return false;
 		}
 
@@ -84,8 +96,9 @@ class Watcher {
 			await this.#watch();
 		}
 
-		clearInterval(this.#intervalTimer);
-		this.#intervalTimer = null;
+		clearTimeout(this.#timeoutTimer);
+		this.#isRunning = false;
+		this.#timeoutTimer = null;
 		return true;
 	}
 
@@ -121,8 +134,12 @@ class Watcher {
 		this.#catchingFn = catchingFn;
 	}
 
-	get intervalTimer() {
-		return this.#intervalTimer;
+	get timeoutTimer() {
+		return this.#timeoutTimer;
+	}
+
+	get isRunning() {
+		return this.#isRunning;
 	}
 }
 
