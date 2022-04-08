@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Client } from "@notionhq/client";
-import NotionWatcher from "./controllers/watchers/notion-watcher.js";
+import NotionDikataAgendaWatcher from "./controllers/watchers/notion-dikata-agenda-watcher.js";
 import checkGcalEnvTokens from "./helpers/google-calendar/tokens/check-gcal-env-tokens.js";
 import getOAuth2Client from "./helpers/google-calendar/tokens/get-oauth2client.js";
 import { google } from "googleapis";
@@ -40,13 +40,13 @@ const calendar = google.calendar({
 const calendarId = process.env.GOOGLE_CALENDAR_PRIMARY_CALENDARID;
 
 // Start watching for notion changes
-const notionWatcher = new NotionWatcher(
+const notionDikataAgendaWatcher = new NotionDikataAgendaWatcher(
 	notionClient,
 	databaseId,
 	calendar,
 	calendarId,
 	parseInt(process.env.NOTION_WATCHER_MS)
 );
-console.log(`notionWatcher is ${notionWatcher.isRunning ? "running" : "not running"}!`);
+console.log(`notionDikataAgendaWatcher is ${notionDikataAgendaWatcher.isRunning ? "running" : "not running"}!`);
 
 

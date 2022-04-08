@@ -11,7 +11,7 @@ import pageEventController from "../page-event-controller/index.js";
  * `delete` google `calendar` `event`s accordingly. When this class is instantiated,
  * it will "scan" the database for changes once before starting its interval.
  */
-class NotionWatcher extends Watcher {
+class NotionDikataAgendaWatcher extends Watcher {
 	/**
 	 *
 	 * @param {import("@notionhq/client").Client} notion
@@ -26,7 +26,7 @@ class NotionWatcher extends Watcher {
 	 */
 	constructor(notion, databaseId, calendar, calendarId, ms) {
 		/**
-		 * {@link NotionWatcher}'s watchingFn will be listing the pages from past month
+		 * {@link NotionDikataAgendaWatcher}'s watchingFn will be listing the pages from past month
 		 * up to next month and then detecting the differences using {@link detectPagesDifferences}
 		 * and returning it to be processed by {@link NotionWatcherAsyncCb}.
 		 */
@@ -48,7 +48,7 @@ class NotionWatcher extends Watcher {
 
 		// eslint-disable-next-line jsdoc/require-param
 		/**
-		 * {@link NotionWatcher}'s asyncCb will be deleting, inserting or updating
+		 * {@link NotionDikataAgendaWatcher}'s asyncCb will be deleting, inserting or updating
 		 * google {@link calendar} events based on the {@link NotionPage} differences that was passed by
 		 * {@link NotionWatcherWatchingFn}.
 		 */
@@ -117,6 +117,6 @@ class NotionWatcher extends Watcher {
 	}
 }
 
-export default NotionWatcher;
+export default NotionDikataAgendaWatcher;
 
 
