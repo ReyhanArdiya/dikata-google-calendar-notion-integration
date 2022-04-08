@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 
 // Only do this if we don't have the tokens in our environment yet
 if (!checkGcalEnvTokens()) {
+	// Get the OAuth2 tokens for google calendar, requires a browser to be opened
 	await import("./helpers/google-calendar/tokens/get-token.js");
 }
 
