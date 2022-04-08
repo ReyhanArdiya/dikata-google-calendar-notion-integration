@@ -40,15 +40,15 @@ const calendar = google.calendar({
 });
 const calendarId = process.env.GOOGLE_CALENDAR_PRIMARY_CALENDARID;
 
-// Start watching for notion changes
+// Start watching for notion dikata agenda changes
 const notionDikataAgendaWatcher = new NotionDikataAgendaWatcher(
 	notionClient,
 	databaseId,
 	calendar,
 	calendarId,
-	parseInt(process.env.NOTION_WATCHER_MS)
+	parseInt(process.env.NOTION_DIKATA_AGENDA_WATCHER_MS)
 );
-console.log(`notionDikataAgendaWatcher is ${notionDikataAgendaWatcher.isRunning ? "running" : "not running"}!`);
+console.log(`notionDikataAgendaWatcher is ${notionDikataAgendaWatcher.isRunning ? "running" : "not running"} every ${notionDikataAgendaWatcher.ms}ms!`);
 
 // Start watching for google calendar dikata events changes
 const googleDikatEventsaWatcher = new GoogleDikataEventsWatcher(
@@ -56,6 +56,6 @@ const googleDikatEventsaWatcher = new GoogleDikataEventsWatcher(
 	calendarId,
 	notionClient,
 	databaseId,
-	2500
+	parseInt(process.env.GOOGLE_DIKATA_EVENTS_WATCHER_MS)
 );
-console.log(`googleDikatEventsaWatcher is ${googleDikatEventsaWatcher.isRunning ? "running" : "not running"}!`);
+console.log(`googleDikatEventsaWatcher is ${googleDikatEventsaWatcher.isRunning ? "running" : "not running"} every ${googleDikatEventsaWatcher.ms}ms!`);
