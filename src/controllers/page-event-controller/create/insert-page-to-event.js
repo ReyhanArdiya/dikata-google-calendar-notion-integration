@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import NotionPage from "../../../models/notion-page.js";
 import PageEvent from "../../../models/page-event.js";
+import isDikataEvent from "../../../helpers/google-calendar/events/is-dikata-event.js";
 import mapPageEvent from "./map-page-event.js";
 
 /**
@@ -39,7 +40,8 @@ const insertPageToEvent = async (
 		date: {
 			end,
 			start
-		}
+		},
+		progress: { id: progressId },
 	} = page;
 
 	const event = calendar.events.insert(
@@ -48,10 +50,12 @@ const insertPageToEvent = async (
 			requestBody : {
 				colorId,
 				end       : { dateTime : end },
-				// id      : id,
 				reminders : { useDefault : true },
 				start     : { dateTime : start },
-				summary   : name,
+
+				// We need to make sure name starts with "Dikata:" since that's the
+				// filter for `listDikataEvents` helper
+				summary : isDikataEvent(name) ? name : `Dikata: ${name}`,
 			},
 			sendUpdates : "all",
 		}
@@ -60,11 +64,13 @@ const insertPageToEvent = async (
 	return await event.then(({ data }) => mapPageEvent(
 		id,
 		data.id,
+		progressId,
 		name,
 		{
 			end,
 			start
-		}
+		},
+		data.status
 	)).catch(err => console.error(err));
 };
 

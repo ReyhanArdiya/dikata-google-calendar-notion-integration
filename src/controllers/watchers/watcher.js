@@ -1,7 +1,9 @@
 /**
  * A class where you can pass an async `watchingFn` that will be called and
  * the awaited result will be passed to `asyncCb` as the first and only argument
- * for every `ms` interval.
+ * for every `ms` interval. Note that this {@link Watcher}
+ * will run its logic again AFTER awaiting the previous {@link Watcher} process, so expect
+ * some delay.
  */
 class Watcher {
 	#asyncCb = null;
@@ -39,12 +41,22 @@ class Watcher {
 	/**
 	 *
 	 * @param {() => Promise<any>} watchingFn
+	 * An async function that will be called first. Then, {@link asyncCb} will be
+	 * called with the returned value of this function passed in as the first argument.
 	 *
 	 * @param {(watchingFnRes : any) => Promise<any>} asyncCb
+	 * An async function that is called after awaiting {@link watchingFn}. This function
+	 * will accept the returned value of {@link watchingFn} as the first argument. The
+	 * returned value of this function won't be used for anything.
 	 *
 	 * @param {(err: Error) => void} catchingFn
+	 * An error catching function that will be called when either {@link watchingFn}
+	 * or {@link asyncCb} throws an error.
 	 *
 	 * @param {number} ms
+	 * Number of ms to run this {@link Watcher} again. Note that this {@link Watcher}
+	 * will run its logic again AFTER awaiting the previous process, so expect
+	 * some delay.
 	 */
 	constructor(watchingFn, asyncCb, catchingFn, ms) {
 		this.#watchingFn = watchingFn;
