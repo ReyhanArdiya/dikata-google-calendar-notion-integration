@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import NotionPage from "../../../models/notion-page.js";
 import PageEvent from "../../../models/page-event.js";
+import isDikataEvent from "../../../helpers/google-calendar/events/is-dikata-event.js";
 import mapPageEvent from "./map-page-event.js";
 
 /**
@@ -54,7 +55,7 @@ const insertPageToEvent = async (
 
 				// We need to make sure name starts with "Dikata:" since that's the
 				// filter for `listDikataEvents` helper
-				summary : name.startsWith("Dikata:") ? name : `Dikata: ${name}`,
+				summary : isDikataEvent(name) ? name : `Dikata: ${name}`,
 			},
 			sendUpdates : "all",
 		}
