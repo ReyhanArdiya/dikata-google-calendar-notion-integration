@@ -23,11 +23,17 @@ const deleteEventUsingPage = async (
 		]
 	});
 
-	await calendar.events.delete({
-		calendarId,
-		eventId,
-		sendUpdates : "all"
-	});
+	// Fix when we delete an event from google calendar FIRST which doesn't delete from database
+	// or notion and THEN we delete the relevant notion page through notion
+	try {
+		await calendar.events.delete({
+			calendarId,
+			eventId,
+			sendUpdates : "all"
+		});
+	} catch (err) {
+		console.error(err);
+	}
 
 	return await PageEvent.findByIdAndDelete(_id);
 };
