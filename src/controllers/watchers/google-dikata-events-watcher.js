@@ -79,7 +79,12 @@ class GoogleDikataEventsWatcher extends Watcher {
 				// Sadly when syncing with gcal again using the previous sync token
 				// we can't filter by "Dikata:" anymore using listDikataEvents,
 				// so we do this to not include events that aren't Dikata
-				if (!isDikataEvent(dikataEvent.summary)) {
+				if (
+					// We need to check summary is there or not first since when deleting an event
+					// we'll get an object without the summary property
+					dikataEvent.summary &&
+					!isDikataEvent(dikataEvent.summary)
+				) {
 					continue;
 				}
 
