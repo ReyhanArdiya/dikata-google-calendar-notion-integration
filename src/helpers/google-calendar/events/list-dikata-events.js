@@ -12,19 +12,15 @@ import { listEventsByTimeRange } from "./list-events.js";
 const listDikataEvents = async (calendar, calendarId) => {
 	const { pastMonthStart, nextMonthEnd } = getPastToNextMonth();
 
-	const { data : { items } } = await listEventsByTimeRange(
+	const { data } = await listEventsByTimeRange(
 		calendar,
 		calendarId,
 		pastMonthStart,
 		nextMonthEnd,
+		"Dikata:"
 	);
 
-	/*
-        CMT the reason I don't use google calendar's "q" parameter is because
-        I only want to search "Dikata:" in the summary only, not in other fields.
-    */
-	// Filter events whose summary starts with "Dikata:"
-	return items.filter(({ summary }) => /^Dikata:\s?.*$/i.test(summary));
+	return data;
 };
 
 export default listDikataEvents;
