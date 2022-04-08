@@ -1,6 +1,6 @@
 {
 	"name": "dikata-google-calendar-notion-integration",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "dikata-google-calendar-notion-integration",
 	"main": "src/app.js",
 	"scripts": {
