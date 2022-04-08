@@ -49,10 +49,12 @@ const insertPageToEvent = async (
 			requestBody : {
 				colorId,
 				end       : { dateTime : end },
-				// id      : id,
 				reminders : { useDefault : true },
 				start     : { dateTime : start },
-				summary   : name,
+
+				// We need to make sure name starts with "Dikata:" since that's the
+				// filter for `listDikataEvents` helper
+				summary : name.startsWith("Dikata:") ? name : `Dikata: ${name}`,
 			},
 			sendUpdates : "all",
 		}
