@@ -7,7 +7,7 @@ import NotionPage from "../../models/notion-page.js";
  *
  * @param {string} databaseId
  *
- * @returns {Promise<any[]>}
+ * @returns {Promise<NotionPage[]>}
  */
 const listPages = async (notion, databaseId) => {
 	const { results } = await notion.databases.query({ "database_id" : databaseId });

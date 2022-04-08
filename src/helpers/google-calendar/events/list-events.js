@@ -12,12 +12,14 @@ import { validateRFC3339 } from "../../dates/RFC3339.js";
  *
  * @param {string} timeMax A RFC3339 timestamp WITH time zone offset, e.g. "YYYY-MM-DDTHH:MM:SS+00:00" or "YYYY-MM-DDTHH:MM:SSZ".
  *
+ * @param {string} q A query string to search events with.
  */
 export const listEventsByTimeRange = async (
 	calendar,
 	calendarId,
 	timeMin,
-	timeMax
+	timeMax,
+	q = ""
 ) => {
 	const errorChecks = {
 		TZOpt    : false,
@@ -28,6 +30,7 @@ export const listEventsByTimeRange = async (
 
 	const res = await calendar.events.list({
 		calendarId,
+		q,
 		showDeleted : true,
 		timeMax,
 		timeMin,

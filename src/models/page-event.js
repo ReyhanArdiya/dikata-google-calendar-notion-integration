@@ -37,6 +37,14 @@ const PageEventSchema = new mongoose.Schema({
 		type     : String,
 		unique   : true
 	},
+	progressId : {
+		required : true,
+		type     : String
+	},
+	status : {
+		required : true,
+		type     : String
+	},
 	title : {
 		required : true,
 		type     : String,
@@ -46,7 +54,9 @@ const PageEventSchema = new mongoose.Schema({
 
 /**
  * This model is a map between a `NotionPage` and a google calendar `event`
- * using their id's and title
+ * using their id's, title and dates. The purpose of this model is so that
+ * the collection's documents will act as our memo to synchronize between a
+ * `NotionPage` and a google calendar `event`.
  */
 const PageEvent = mongoose.model("PageEvent", PageEventSchema);
 

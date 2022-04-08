@@ -8,11 +8,23 @@ import PageEvent from "../../../models/page-event.js";
  *
  * @param {string} eventId
  *
+ * @param {string} progressId The `progress.id` from `NotionPage`
+ *
  * @param {string} title
  *
  * @param {{start: string, end: string}} date Start & End date string in RFC3339 format
+ *
+ * @param {"cancelled" | "confirmed" | "tentative"} status
+ * The google `event` status field.
  */
-const mapPageEvent = async (pageId, eventId, title, { start, end }) => {
+const mapPageEvent = async (
+	pageId,
+	eventId,
+	progressId,
+	title,
+	{ start, end },
+	status
+) => {
 	const pageEvent = new PageEvent({
 		date : {
 			end,
@@ -20,6 +32,8 @@ const mapPageEvent = async (pageId, eventId, title, { start, end }) => {
 		},
 		eventId,
 		pageId,
+		progressId,
+		status,
 		title
 	});
 
