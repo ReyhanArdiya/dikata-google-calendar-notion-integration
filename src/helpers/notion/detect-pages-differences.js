@@ -95,7 +95,7 @@ const detectPagesDifferences = async (notionPages, verboseUpdates = false) => {
 	// We'll loop through pageEvents and not notionPages since we need information
 	// about the _id, eventId, old dates and old title
 	pageEvents.forEach(
-		({ _id, date: { start, end }, eventId, pageId, title }) => {
+		({ _id, date: { start, end }, eventId, pageId, progressId, title }) => {
 			const notionPage = notionPagesIndex[pageId];
 
 			// If the page doesn't exist in notionPages, it means that it is
@@ -105,13 +105,19 @@ const detectPagesDifferences = async (notionPages, verboseUpdates = false) => {
 			}
 
 			// If it passed that check, it means that the page is available in both
-			// arrays and we can compare their title & dates
+			// arrays and we can compare them
 			const isTitleDiff = title !== notionPage.name;
 			const isDateStartDiff = start !== notionPage.date.start;
 			const isDateEndDiff = end !== notionPage.date.end;
+			const isProgressIdDiff = progressId !== notionPage.progress.id;
 
 			// If any property is different, it means that the page was updated
-			if (isTitleDiff || isDateStartDiff || isDateEndDiff) {
+			if (
+				isTitleDiff ||
+				isDateStartDiff ||
+				isDateEndDiff ||
+				isProgressIdDiff
+			) {
 				if (verboseUpdates) {
 					// We store the updates here first and give it the page's base information
 					const pageUpdates = {
