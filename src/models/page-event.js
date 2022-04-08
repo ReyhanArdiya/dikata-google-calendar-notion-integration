@@ -37,6 +37,10 @@ const PageEventSchema = new mongoose.Schema({
 		type     : String,
 		unique   : true
 	},
+	progressId : {
+		required : true,
+		type     : String
+	},
 	status : {
 		required : true,
 		type     : String

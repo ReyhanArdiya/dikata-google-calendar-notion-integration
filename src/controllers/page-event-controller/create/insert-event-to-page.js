@@ -63,6 +63,7 @@ const insertEventToPage = async ({
 	return await mapPageEvent(
 		page.id,
 		event.id,
+		progressId,
 		summary,
 		{
 			end,

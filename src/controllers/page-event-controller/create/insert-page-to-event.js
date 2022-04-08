@@ -39,7 +39,8 @@ const insertPageToEvent = async (
 		date: {
 			end,
 			start
-		}
+		},
+		progress: { id: progressId },
 	} = page;
 
 	const event = calendar.events.insert(
@@ -60,6 +61,7 @@ const insertPageToEvent = async (
 	return await event.then(({ data }) => mapPageEvent(
 		id,
 		data.id,
+		progressId,
 		name,
 		{
 			end,
