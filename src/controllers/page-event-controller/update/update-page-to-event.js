@@ -53,6 +53,7 @@ const updatePageToEvent = async (calendar, calendarId, page) => {
 	pageMemo.eventId = updatedEvent.data.id;
 	pageMemo.pageId = pageId;
 	pageMemo.title = name;
+	pageMemo.status = updatedEvent.data.status;
 
 	return await pageMemo.save();
 };

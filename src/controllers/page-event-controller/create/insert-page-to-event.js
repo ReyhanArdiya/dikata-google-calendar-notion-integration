@@ -64,7 +64,8 @@ const insertPageToEvent = async (
 		{
 			end,
 			start
-		}
+		},
+		data.status
 	)).catch(err => console.error(err));
 };
 

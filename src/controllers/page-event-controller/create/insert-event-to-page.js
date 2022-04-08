@@ -67,7 +67,8 @@ const insertEventToPage = async ({
 		{
 			end,
 			start
-		}
+		},
+		event.status
 	);
 };
 

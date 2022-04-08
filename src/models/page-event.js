@@ -37,6 +37,10 @@ const PageEventSchema = new mongoose.Schema({
 		type     : String,
 		unique   : true
 	},
+	status : {
+		required : true,
+		type     : String
+	},
 	title : {
 		required : true,
 		type     : String,

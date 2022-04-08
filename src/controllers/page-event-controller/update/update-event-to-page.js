@@ -89,6 +89,7 @@ const updateEventToPage = async (
 	eventMemo.eventId = eventId;
 	eventMemo.pageId = updatedPage.id;
 	eventMemo.title = summary;
+	eventMemo.status = status;
 
 	return await eventMemo.save();
 };
