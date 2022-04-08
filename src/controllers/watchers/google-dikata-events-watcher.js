@@ -123,11 +123,11 @@ class GoogleDikataEventsWatcher extends Watcher {
 					// Create in notion and maps it into database
 					await pageEventController.create.insertEventToPage({
 						databaseId,
-						event         : dikataEvent,
+						event      : dikataEvent,
 						notion,
-						notionSummary : `${dikataEvent.eventTitle} will start at ${dikataEvent.eventStart} and end at ${dikataEvent.eventEnd}`,
-						progressId    : Progress["Not Yet"],
-						typeId        : Type["Department Meeting"],
+						progressId : Progress["Not Yet"],
+						typeId     : Type["Department Meeting"]
+						// notionSummary : `${dikataEvent.summary} will start at ${dikataEvent.start.dateTime} and end at ${dikataEvent.end.dateTime}`,
 					});
 
 					// No need to continue this loop

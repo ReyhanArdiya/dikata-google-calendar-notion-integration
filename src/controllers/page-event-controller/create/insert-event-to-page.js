@@ -54,7 +54,7 @@ const insertEventToPage = async ({
 				},
 				Name     : { title : [ { text : { content : summary } } ] },
 				Progress : { select : { id : progressId } },
-				Summary  : { "rich_text" : [ { text : { content : notionSummary !== "" ? notionSummary : summary } } ] },
+				Summary  : { "rich_text" : [ { text : { content : notionSummary } } ] },
 				Type     : { select : { id : typeId } },
 			}
 		}
