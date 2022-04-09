@@ -106,11 +106,27 @@ class NotionDikataAgendaWatcher extends Watcher {
 			// Update relevant events if there were any updated page
 			if (updatedPages) {
 				updatedPages.forEach(
-					updatedPage => pageEventController.update.updatePageToEvent(
-						calendar,
-						calendarId,
-						updatedPage
-					).catch(err => console.error(err))
+					updatedPage => {
+						// Update notion page progress when changing the date through notion
+						notion.pages.update({
+							"page_id"  : updatedPage.id,
+							properties : {
+								Progress : {
+									select : {
+										// eslint-disable-next-line key-spacing
+										id: updatedPage.progress.id
+									}
+								}
+							}
+						});
+
+						// Update the rest of the page in google calendar
+						pageEventController.update.updatePageToEvent(
+							calendar,
+							calendarId,
+							updatedPage
+						).catch(err => console.error(err));
+					}
 				);
 			}
 		};
