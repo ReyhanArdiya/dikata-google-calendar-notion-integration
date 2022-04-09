@@ -13,7 +13,9 @@ The main features of this integration are:
 1. <span style="color: aqua">Create</span> new notion page <-> <span style="color: aqua">Create</span> new google calendar event
 2. <span style="color: yellow">Update</span> notion page <-> <span style="color: yellow">Update</span> google calendar event
 3. <span style="color: yellow">Update</span> notion page progress to cancelled <-> <span style="color: orangered">Delete</span> google calendar event
-4. <span style="color: orangered">Delete</span> notion page -> <span style="color: orangered">Delete</span> google calendar event
+4. <span style="color: yellow">Update</span> notion page date -> <span style="color: yellow">Update</span> notion page progress
+5. <span style="color: yellow">Update</span> google event date -> <span style="color: yellow">Update</span> notion page progress
+6. <span style="color: orangered">Delete</span> notion page -> <span style="color: orangered">Delete</span> google calendar event
 
 When updating a page, only the `Name`, `Date` and `Progress` property are considered by
 this integration.
