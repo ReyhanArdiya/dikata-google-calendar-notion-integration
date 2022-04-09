@@ -1,5 +1,6 @@
 import PageEvent from "../../models/page-event.js";
 import Watcher from "./watcher.js";
+import compareNowWithRange from "../../helpers/dates/compare-now-with-range.js";
 import isDikataEvent from "../../helpers/google-calendar/events/is-dikata-event.js";
 import listDikataEvents from "../../helpers/google-calendar/events/list-dikata-events.js";
 import pageEventController from "../page-event-controller/index.js";
@@ -125,8 +126,12 @@ class GoogleDikataEventsWatcher extends Watcher {
 						databaseId,
 						event      : dikataEvent,
 						notion,
-						progressId : Progress["Not Yet"],
-						typeId     : Type["Department Meeting"]
+						// Automatically picks the right progress
+						progressId : Progress[compareNowWithRange(
+							dikataEvent.start.dateTime,
+							dikataEvent.end.dateTime
+						)],
+						typeId : Type["Department Meeting"]
 						// notionSummary : `${dikataEvent.summary} will start at ${dikataEvent.start.dateTime} and end at ${dikataEvent.end.dateTime}`,
 					});
 
