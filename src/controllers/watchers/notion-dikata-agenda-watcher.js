@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import NotionPage from "../../models/notion-page.js";
+import { Progress } from "../../models/selections-map.js";
 import Watcher from "./watcher.js";
+import compareNowWithRange from "../../helpers/dates/compare-now-with-range.js";
 import detectPagesDifferences from "../../helpers/notion/detect-pages-differences.js";
 import { getPastToNextMonth } from "../../helpers/dates/date-range.js";
 import listPagesByDateRange from "../../helpers/notion/list-pages-by-date-range.js";
@@ -41,6 +43,15 @@ class NotionDikataAgendaWatcher extends Watcher {
 				pastMonthStart,
 				nextMonthEnd
 			);
+
+			// Change each notionPage's "Progress" id to match the current time.
+			// This allows the automatic "Progress" updating feature in notion.
+			for (const notionPage of notionPages) {
+				notionPage.progress.id = Progress[compareNowWithRange(
+					notionPage.date.start,
+					notionPage.date.end
+				)];
+			}
 
 			// Detect the differences and pass it to NotionWatcherAsyncCb
 			return await detectPagesDifferences(notionPages);
