@@ -56,7 +56,7 @@ if (!checkGcalEnvTokens()) {
 		calendarId,
 		notionClient,
 		databaseId,
-		parseInt(process.env.GOOGLE_DIKATA_EVENTS_WATCHER_MS)
+		parseInt(process.env.GOOGLE_EVENTS_WATCHER_MS)
 	);
 	console.log(`googleDikatEventsaWatcher is ${googleDikatEventsaWatcher.isRunning ? "running" : "not running"} every ${googleDikatEventsaWatcher.ms}ms!`);
 
