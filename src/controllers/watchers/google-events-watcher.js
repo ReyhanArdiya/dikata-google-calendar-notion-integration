@@ -82,7 +82,8 @@ class GoogleEventsWatcher extends Watcher {
 			for (const event of events) {
 				// Sadly when syncing with gcal again using the previous sync token
 				// we can't filter anymore using listGoogleCalendarEventsFilterEvents,
-				// so we do this to only include the events that we want
+				// which means that `events` will include events that we don't want.
+				// So we do this to only include the events that we want.
 				if (
 					// We need to check if summary is there or not first since when deleting an event
 					// we'll get an object without the summary property
