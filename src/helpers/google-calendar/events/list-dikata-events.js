@@ -17,7 +17,7 @@ const listDikataEvents = async (calendar, calendarId) => {
 		calendarId,
 		pastMonthStart,
 		nextMonthEnd,
-		"Dikata:"
+		`${process.env.GOOGLE_CALENDAR_EVENTS_FILTER}`
 	);
 
 	return data;

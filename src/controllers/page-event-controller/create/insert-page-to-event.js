@@ -53,9 +53,9 @@ const insertPageToEvent = async (
 				reminders : { useDefault : true },
 				start     : { dateTime : start },
 
-				// We need to make sure name starts with "Dikata:" since that's the
+				// We need to make sure name starts with what we want, since that's the
 				// filter for `listDikataEvents` helper
-				summary : isDikataEvent(name) ? name : `Dikata: ${name}`,
+				summary : isDikataEvent(name) ? name : `${process.env.GOOGLE_CALENDAR_EVENTS_FILTER} ${name}`,
 			},
 			sendUpdates : "all",
 		}

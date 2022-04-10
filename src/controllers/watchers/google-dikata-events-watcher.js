@@ -81,9 +81,10 @@ class GoogleDikataEventsWatcher extends Watcher {
 				// we can't filter by "Dikata:" anymore using listDikataEvents,
 				// so we do this to not include events that aren't Dikata
 				if (
-					// We need to check summary is there or not first since when deleting an event
+					// We need to check if summary is there or not first since when deleting an event
 					// we'll get an object without the summary property
 					dikataEvent.summary &&
+					// Then, if it's not the event we want, we can just skip it
 					!isDikataEvent(dikataEvent.summary)
 				) {
 					continue;
