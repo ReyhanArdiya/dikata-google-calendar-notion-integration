@@ -1,8 +1,8 @@
 import PageEvent from "../../models/page-event.js";
 import Watcher from "./watcher.js";
 import compareNowWithRange from "../../helpers/dates/compare-now-with-range.js";
-import isDikataEvent from "../../helpers/google-calendar/events/is-dikata-event.js";
-import listDikataEvents from "../../helpers/google-calendar/events/list-dikata-events.js";
+import doesEventStartWithEnvFilter from "../../helpers/google-calendar/events/does-event-start-with-env-filter.js";
+import listGoogleCalendarEventsFilterEvents from "../../helpers/google-calendar/events/list-google-calendar-events-filter-events.js";
 import pageEventController from "../page-event-controller/index.js";
 import { Progress, Type } from "../../models/selections-map.js";
 
@@ -11,7 +11,7 @@ import { Progress, Type } from "../../models/selections-map.js";
  * `cancel` `notion` page's accordingly. When this class is instantiated,
  * it will "scan" the `calendar` for changes once before starting its interval.
  */
-class GoogleDikataEventsWatcher extends Watcher {
+class GoogleEventsWatcher extends Watcher {
 	#syncToken = null;
 
 	/**
@@ -30,20 +30,23 @@ class GoogleDikataEventsWatcher extends Watcher {
 		/**
 		 * The watchingFn will be making an initial sync to google {@link calendar}
 		 * and then repeteadly sync and passing the returned events array
-		 * to {@link processDikataEvents}.
+		 * to {@link processEvents}.
 		 */
-		const watchAndSyncDikataEvents = async () => {
-			let dikataEvents;
+		const watchAndSyncEvents = async () => {
+			let events;
 			let syncToken;
 
 			// Initial sync
 			if (!this.#syncToken) {
-				const { items, nextSyncToken } = await listDikataEvents(
+				const {
+					items,
+					nextSyncToken
+				} = await listGoogleCalendarEventsFilterEvents(
 					calendar,
 					calendarId,
 				);
 
-				dikataEvents = items;
+				events = items;
 				syncToken = nextSyncToken;
 			} else {
 				// Sync with new changes from previous
@@ -59,49 +62,51 @@ class GoogleDikataEventsWatcher extends Watcher {
 					}
 				);
 
-				dikataEvents = items;
+				events = items;
 				syncToken = nextSyncToken;
 			}
 
 			this.#syncToken = syncToken;
 
-			return dikataEvents;
+			return events;
 		};
 
 		/**
-		 * Processes {@link dikataEvents} to update, insert or cancel relevant
-		 * pages in the `noiton` agenda database.
+		 * Processes {@link events} to update, insert or cancel relevant
+		 * pages in the `notion` agenda database.
 		 *
-		 * @param {import("googleapis").calendar_v3.Schema$Event[]} dikataEvents
-		 * The synced dikata events array returned by {@link watchAndSyncDikataEvents}
+		 * @param {import("googleapis").calendar_v3.Schema$Event[]} events
+		 * The synced events array returned by {@link watchAndSyncEvents}
 		 */
-		const processDikataEvents = async dikataEvents => {
-			for (const dikataEvent of dikataEvents) {
+		const processEvents = async events => {
+			for (const event of events) {
 				// Sadly when syncing with gcal again using the previous sync token
-				// we can't filter by "Dikata:" anymore using listDikataEvents,
-				// so we do this to not include events that aren't Dikata
+				// we can't filter anymore using listGoogleCalendarEventsFilterEvents,
+				// which means that `events` will include events that we don't want.
+				// So we do this to only include the events that we want.
 				if (
-					// We need to check summary is there or not first since when deleting an event
+					// We need to check if summary is there or not first since when deleting an event
 					// we'll get an object without the summary property
-					dikataEvent.summary &&
-					!isDikataEvent(dikataEvent.summary)
+					event.summary &&
+					// Then, if it's not the event we want, we can just skip it
+					!doesEventStartWithEnvFilter(event.summary)
 				) {
 					continue;
 				}
 
-				// Try to find the PageEvent for this dikataEvent
+				// Try to find the PageEvent for this event
 				const currentPageEvent = await PageEvent.findOne({
 					$or : [
-						{ eventId : dikataEvent.id },
-						{ title : dikataEvent.summary }
+						{ eventId : event.id },
+						{ title : event.summary }
 					]
 				});
 
 				// CMT I use continue here instead of else to avoid the indentation
 
-				// Cancelled is when this dikataEvent status is "cancelled" and
+				// Cancelled is when this event status is "cancelled" and
 				// we have it in our database
-				if (dikataEvent.status === "cancelled" && currentPageEvent) {
+				if (event.status === "cancelled" && currentPageEvent) {
 					// Cancel (not archive) in notion
 					await notion.pages.update({
 						"page_id"  : currentPageEvent?.pageId,
@@ -119,20 +124,20 @@ class GoogleDikataEventsWatcher extends Watcher {
 					continue;
 				}
 
-				// New is when we don't have this dikataEvent in PageEvents
+				// New is when we don't have this event in PageEvents
 				if (!currentPageEvent) {
 					// Create in notion and maps it into database
 					await pageEventController.create.insertEventToPage({
 						databaseId,
-						event      : dikataEvent,
+						event      : event,
 						notion,
 						// Automatically picks the right progress
 						progressId : Progress[compareNowWithRange(
-							dikataEvent.start.dateTime,
-							dikataEvent.end.dateTime
+							event.start.dateTime,
+							event.end.dateTime
 						)],
 						typeId : Type["Department Meeting"]
-						// notionSummary : `${dikataEvent.summary} will start at ${dikataEvent.start.dateTime} and end at ${dikataEvent.end.dateTime}`,
+						// notionSummary : `${event.summary} will start at ${event.start.dateTime} and end at ${event.end.dateTime}`,
 					});
 
 					// No need to continue this loop
@@ -145,7 +150,7 @@ class GoogleDikataEventsWatcher extends Watcher {
 					start: { dateTime: eventStart },
 					end: { dateTime: eventEnd },
 					status: eventStatus
-				} = dikataEvent;
+				} = event;
 
 				// Check for differences
 				const isTitleDiff = eventTitle !== currentPageEvent.title;
@@ -158,7 +163,7 @@ class GoogleDikataEventsWatcher extends Watcher {
 					// Update in notion & database
 					await pageEventController.update.updateEventToPage(
 						notion,
-						dikataEvent
+						event
 					);
 				}
 			}
@@ -167,8 +172,8 @@ class GoogleDikataEventsWatcher extends Watcher {
 		const catchError = err => console.error(err);
 
 		super(
-			watchAndSyncDikataEvents,
-			processDikataEvents,
+			watchAndSyncEvents,
+			processEvents,
 			catchError,
 			ms
 		);
@@ -177,4 +182,4 @@ class GoogleDikataEventsWatcher extends Watcher {
 	}
 }
 
-export default GoogleDikataEventsWatcher;
+export default GoogleEventsWatcher;

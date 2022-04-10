@@ -2,14 +2,15 @@ import { getPastToNextMonth } from "../../dates/date-range.js";
 import { listEventsByTimeRange } from "./list-events.js";
 
 /**
- * Lists all Dikata events whose title/summary starts with "Dikata:" from today up
+ * Lists all events whose title/summary contains a string that matches
+ * `process.env.GOOGLE_CALENDAR_EVENTS_FILTER` from past month
  * to next month.
  *
  * @param {import("googleapis").calendar_v3.Calendar} calendar
  *
  * @param {string} calendarId
  */
-const listDikataEvents = async (calendar, calendarId) => {
+const listGoogleCalendarEventsFilterEvents = async (calendar, calendarId) => {
 	const { pastMonthStart, nextMonthEnd } = getPastToNextMonth();
 
 	const { data } = await listEventsByTimeRange(
@@ -17,10 +18,10 @@ const listDikataEvents = async (calendar, calendarId) => {
 		calendarId,
 		pastMonthStart,
 		nextMonthEnd,
-		"Dikata:"
+		`${process.env.GOOGLE_CALENDAR_EVENTS_FILTER}`
 	);
 
 	return data;
 };
 
-export default listDikataEvents;
+export default listGoogleCalendarEventsFilterEvents;

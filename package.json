@@ -5,7 +5,8 @@
 	"main": "src/app.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node ."
+		"start": "node .",
+		"auth": "node src/helpers/google-calendar/tokens/get-token.js"
 	},
 	"type": "module",
 	"keywords": [],
