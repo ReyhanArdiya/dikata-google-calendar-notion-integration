@@ -29,7 +29,8 @@ the start & end time are considered by this integration.
 
 This integration was specifically made for my "dikata agenda and notes" notion
 database and the calendar events that are targeted by this integration are the ones
-whose title starts with "Dikata:" or "dikata" case-insensitive [(more on this later)](#how-it-works-sort-of).
+whose title starts with ~~"Dikata:" or "dikata"~~ a string stored
+in `process.env.GOOGLE_CALENDAR_EVENTS_FILTER` case-insensitive [(more on this later)](#how-it-works-sort-of).
 
 But, this integration should target any notion database that has the same database
 property schema as the one I'm using:
@@ -49,12 +50,14 @@ an environment variable later.
 
 For the calendar, this integration should not target any specific kind of google
 calendar. You just need to pass in your OAuth2 token later as an environment variable and
-start any google calendar event title with "Dikata:" or "dikata" case-insensitive
+start any google calendar event title with ~~"Dikata:" or "dikata"~~ the string stored
+in `process.env.GOOGLE_CALENDAR_EVENTS_FILTER` case-insensitive
 [(more on this later)](#how-it-works-sort-of).
 
-To change how the integration detects these specific events, you could change
-codes that detects "Dikata" infront of the event title (like in `listDikataEvents`
-and `isDikataEvent` helper).
+To change how the integration detects these specific events when the
+google watcher runs for the first time, you can change ~~codes that detects
+"Dikata" infront of the event title (like in `listDikataEvents`
+and `isDikataEvent` helper)~~ the `process.env.GOOGLE_CALENDAR_EVENTS_FILTER` value.
 
 # Summarized Integration Logic
 
@@ -96,7 +99,8 @@ GOOGLE_CALENDAR_OAUTH2_CLIENT_SECRET
 GOOGLE_CALENDAR_OAUTH2_ACCESS_TOKEN
 GOOGLE_CALENDAR_OAUTH2_REFRESH_TOKEN
 NOTION_DIKATA_AGENDA_WATCHER_MS
-GOOGLE_DIKATA_EVENTS_WATCHER_MS
+GOOGLE_EVENTS_WATCHER_MS
+GOOGLE_CALENDAR_EVENTS_FILTER
 ```
 
 ## How it Works (sort of)
@@ -111,10 +115,14 @@ GOOGLE_DIKATA_EVENTS_WATCHER_MS
    once to initialize a synchronization between database, calendar and out database.
     - The mongo database will act as a memo that stores sync information about a page
       and its respective event using the `PageEvent` model.
-    - On the first calendar scan, the events that will be included are the ones
+    - ~~On the first calendar scan, the events that will be included are the ones
       whose title starts with "Dikata:", but the synchronization that happens
       after this initial one can also detect events whose title starts with
-      "dikata" case-insensitive.
+      "dikata" case-insensitive.~~
+    - The events that will be included are the ones whose title starts with
+      the string stored in `process.env.GOOGLE_CALENDAR_EVENTS_FILTER` case-insensitive.
+      This behavior was updated in `v2.0.0` to make the integration a bit more
+      flexible.
 4. After that, the watchers will keep running every `ms` to keep synchronizing the
    database and calendar.
 
