@@ -1,7 +1,7 @@
 import PageEvent from "../../models/page-event.js";
 import Watcher from "./watcher.js";
 import compareNowWithRange from "../../helpers/dates/compare-now-with-range.js";
-import isDikataEvent from "../../helpers/google-calendar/events/is-dikata-event.js";
+import doesEventStartWithEnvFilter from "../../helpers/google-calendar/events/does-event-start-with-env-filter.js";
 import listDikataEvents from "../../helpers/google-calendar/events/list-dikata-events.js";
 import pageEventController from "../page-event-controller/index.js";
 import { Progress, Type } from "../../models/selections-map.js";
@@ -85,7 +85,7 @@ class GoogleDikataEventsWatcher extends Watcher {
 					// we'll get an object without the summary property
 					dikataEvent.summary &&
 					// Then, if it's not the event we want, we can just skip it
-					!isDikataEvent(dikataEvent.summary)
+					!doesEventStartWithEnvFilter(dikataEvent.summary)
 				) {
 					continue;
 				}
