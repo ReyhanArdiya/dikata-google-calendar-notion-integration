@@ -54,7 +54,7 @@ const insertPageToEvent = async (
 				start     : { dateTime : start },
 
 				// We need to make sure name starts with what we want, since that's the
-				// filter for `listDikataEvents` helper
+				// filter for `listGoogleCalendarEventsFilterEvents` helper
 				summary : doesEventStartWithEnvFilter(name) ? name : `${process.env.GOOGLE_CALENDAR_EVENTS_FILTER} ${name}`,
 			},
 			sendUpdates : "all",

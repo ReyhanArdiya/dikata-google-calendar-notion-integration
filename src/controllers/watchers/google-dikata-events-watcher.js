@@ -2,7 +2,7 @@ import PageEvent from "../../models/page-event.js";
 import Watcher from "./watcher.js";
 import compareNowWithRange from "../../helpers/dates/compare-now-with-range.js";
 import doesEventStartWithEnvFilter from "../../helpers/google-calendar/events/does-event-start-with-env-filter.js";
-import listDikataEvents from "../../helpers/google-calendar/events/list-dikata-events.js";
+import listGoogleCalendarEventsFilterEvents from "../../helpers/google-calendar/events/list-google-calendar-events-filter-events.js";
 import pageEventController from "../page-event-controller/index.js";
 import { Progress, Type } from "../../models/selections-map.js";
 
@@ -38,7 +38,10 @@ class GoogleDikataEventsWatcher extends Watcher {
 
 			// Initial sync
 			if (!this.#syncToken) {
-				const { items, nextSyncToken } = await listDikataEvents(
+				const {
+					items,
+					nextSyncToken
+				} = await listGoogleCalendarEventsFilterEvents(
 					calendar,
 					calendarId,
 				);
@@ -78,7 +81,7 @@ class GoogleDikataEventsWatcher extends Watcher {
 		const processDikataEvents = async dikataEvents => {
 			for (const dikataEvent of dikataEvents) {
 				// Sadly when syncing with gcal again using the previous sync token
-				// we can't filter by "Dikata:" anymore using listDikataEvents,
+				// we can't filter anymore using listGoogleCalendarEventsFilterEvents,
 				// so we do this to not include events that aren't Dikata
 				if (
 					// We need to check if summary is there or not first since when deleting an event
